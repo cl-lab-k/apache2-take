@@ -6,8 +6,6 @@
 #
 
 default[ 'apache2-take' ][ 'port'    ] = '8080'
-default[ 'apache2-take' ][ 'hashtag' ] = 'opschef_ja'
-default[ 'apache2-take' ][ 'twitter' ] = []
 
 #
 # [EOF]
