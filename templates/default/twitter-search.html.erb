@@ -1,0 +1,13 @@
+<html>
+<head><title>Twitter Search: <%= @hashtag %></title></head>
+<body>
+<table border="border">
+<%- @twitter[ 'results' ].each do |h| -%>
+  <tr>
+    <td><%= h[ 'from_user' ] %></td>
+    <td><%= h[ 'text'      ] %></td>
+  </tr>
+<%- end -%>
+</table>
+</body>
+</html>
