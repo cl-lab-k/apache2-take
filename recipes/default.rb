@@ -63,6 +63,14 @@ template '/etc/apache2/sites-available/default' do
 end
 
 #
+# enable default site
+#
+execute 'a2ensite default' do
+  command 'a2ensite default'
+  notifies :restart, 'service[apache2]'
+end
+
+#
 # set content (git)
 #
 git "#{Chef::Config[ :file_cache_path ]}/apache2-take-sample-page" do
