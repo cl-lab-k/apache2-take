@@ -9,7 +9,7 @@
 # install required packages
 #
 execute 'apt-get update'
-%w{ apache2 git curl unzip }.each do |s|
+%w{ apache2 git-core curl unzip }.each do |s|
   package s
 end
 
