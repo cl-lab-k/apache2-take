@@ -6,9 +6,13 @@
 #
 
 #
-# install required packages
+# update apt database
 #
 execute 'apt-get update'
+
+#
+# install required packages
+#
 %w{ apache2 git-core curl unzip }.each do |s|
   package s
 end
