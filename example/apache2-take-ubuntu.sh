@@ -26,7 +26,7 @@ fi
 # install required packages
 #
 apt-get update && \
-apt-get install -y apache2 git curl unzip && \
+apt-get install -y apache2 git-core curl unzip && \
 dpkg -l apache git curl unzip 1> /dev/null 2> /dev/null
 #
 if [ "x$?" != "x0" ]; then
@@ -67,6 +67,16 @@ grep -qE "^<VirtualHost \*:${PORT}>$" /etc/apache2/sites-available/default
 #
 if [ "x$?" != "x0" ]; then
 	echo "cannot change port"
+	exit 1
+fi
+
+#
+# enable default site
+#
+a2ensite default
+#
+if [ "x$?" != "x0" ]; then
+	echo "cannot enable default site"
 	exit 1
 fi
 
