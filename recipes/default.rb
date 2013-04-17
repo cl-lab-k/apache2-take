@@ -18,26 +18,35 @@ execute 'apt-get update'
 end
 
 #
+# set apache2 service_name
+#
+case node['platform_family']
+when "rhel", "fedora", "suse"
+  apache2_name = "httpd"
+when "debian"
+  apache2_name = "apache2"
+when "arch"
+  apache2_name = "httpd"
+when "freebsd"
+  apache2_name = "apache22"
+end
+
+#
 # this is part of opscode-cookbooks/apache2/recipes/default.rb
 #
 service 'apache2' do
+  # If restarted/reloaded too quickly httpd has a habit of failing.
+  # This may happen with multiple recipes notifying apache to restart - like
+  # during the initial bootstrap.
   case node['platform_family']
   when "rhel", "fedora", "suse"
-    service_name "httpd"
-    # If restarted/reloaded too quickly httpd has a habit of failing.
-    # This may happen with multiple recipes notifying apache to restart - like
-    # during the initial bootstrap.
     restart_command "/sbin/service httpd restart && sleep 1"
     reload_command "/sbin/service httpd reload && sleep 1"
   when "debian"
-    service_name "apache2"
     restart_command "/usr/sbin/invoke-rc.d apache2 restart && sleep 1"
     reload_command "/usr/sbin/invoke-rc.d apache2 reload && sleep 1"
-  when "arch"
-    service_name "httpd"
-  when "freebsd"
-    service_name "apache22"
   end
+  service_name apache2_name
   supports [:restart, :reload, :status]
   action :enable
 end
@@ -98,7 +107,8 @@ end
 #
 # start apache2
 #
-service 'apache2' do
+service 'apache2-start' do
+  service_name apache2_name
   action :start
 end
 
