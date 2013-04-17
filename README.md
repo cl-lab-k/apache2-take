@@ -1,23 +1,19 @@
 apache2-take Cookbook
 =====================
-TODO: Enter the cookbook description here.
 
-e.g.
-This cookbook makes your favorite breakfast sandwhich.
+[![Build Status](https://secure.travis-ci.org/cl-lab-k/apache2-take.png?branch=master)](https://travis-ci.org/cl-lab-k/apache2-take)
+
+This cookbook is for a Chef Handson Seminar **Take** course.
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
 
-e.g.
-#### packages
-- `toaster` - apache2-take needs toaster to brown your bagel.
+#### Platforms
+- `ubuntu` - 10.04 LTS, 12.04 LTS
 
 Attributes
 ----------
-TODO: List you cookbook attributes here.
 
-e.g.
 #### apache2-take::default
 <table>
   <tr>
@@ -27,17 +23,16 @@ e.g.
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['apache2-take']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
+    <td><tt>['apache2-take']['port']</tt></td>
+    <td>String</td>
+    <td>apache2 port number</td>
+    <td><tt>8080</tt></td>
   </tr>
 </table>
 
 Usage
 -----
 #### apache2-take::default
-TODO: Write usage instructions for each cookbook.
 
 e.g.
 Just include `apache2-take` in your node's `run_list`:
@@ -51,18 +46,20 @@ Just include `apache2-take` in your node's `run_list`:
 }
 ```
 
-Contributing
-------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
-
-e.g.
-1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
-3. Write you change
-4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
-6. Submit a Pull Request using Github
-
 License and Authors
 -------------------
-Authors: TODO: List authors
+* Author:: HIGUCHI Daisuke <d-higuchi@creationline.com>
+
+* Copyright:: 2013m CREATIONLINE,INC.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
