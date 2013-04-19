@@ -25,7 +25,10 @@ describe 'apache2-take::default' do
   end
 
   describe 'set content' do
-    # git
+    s = 'https://github.com/cl-lab-k/apache2-take-sample-page'
+    it "clone #{s}" do
+      chef_run.git( s )
+    end
 
     it 'create /var/www/index.html' do
       chef_run.execute( "cp -f #{Chef::Config[ :file_cache_path ]}/apache2-take-sample-page/index.html /var/www/index.html" )
@@ -39,12 +42,12 @@ describe 'apache2-take::default' do
 
     it 'unzip apache2-take-sample-image.zip' do
       chef_run.execute( "unzip -o -d #{Chef::Config[ :file_cache_path ]} #{Chef::Config[ :file_cache_path ]}/apache2-take-sample-image.zip" )
-      # not_if
+      # not_if { ::File.exists?( "#{Chef::Config[ :file_cache_path ]}/apache2-take-sample-image-master" ) }
     end
 
     it 'move /var/www/img' do
       chef_run.execute( "mv -f #{Chef::Config[ :file_cache_path ]}/apache2-take-sample-image-master /var/www/img" )
-      # not_if
+      # not_if { ::File.exists?( '/var/www/img' ) }
     end
   end
 
