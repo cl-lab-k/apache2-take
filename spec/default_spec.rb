@@ -1,25 +1,28 @@
 require 'chefspec'
 
 describe 'apache2-take::default' do
-  let (:chef_run) { ChefSpec::ChefRunner.new.converge 'apache2-take::default' }
+  let (:chef_run) { ChefSpec::Runner.new.converge 'apache2-take::default' }
 
   %w{ apache2 git-core curl unzip }.each do |s|
     it "install #{s}" do
-      chef_run.should install_package s
+      expect( chef_run ).to install_package( s )
     end
   end
 
   it 'start on boot' do
-    chef_run.should set_service_to_start_on_boot 'apache2'
+    expect( chef_run ).to enable_service( 'apache2' )
   end
 
   describe 'change port' do
     %w{ /etc/apache2/ports.conf /etc/apache2/sites-available/default }.each do |s|
       it "create #{s}" do
-        chef_run.should create_file_with_content s, chef_run.node[ 'apache2-take' ][ 'port' ]
-        chef_run.template( s ).should be_owned_by( 'root', 'root' )
-        chef_run.template( s ).mode.should == 00644
-        chef_run.template( s ).should notify( 'service[apache2]', :restart )
+        expect( chef_run ).to render_file( s ).with_content( chef_run.node[ 'apache2-take' ][ 'port' ] )
+        expect( chef_run ).to create_template( s )
+        file = chef_run.template( s )
+        expect( file.owner ).to eq( 'root' )
+        expect( file.group ).to eq( 'root' )
+        expect( file.mode ).to eq( 00644 )
+        expect( file ).to notify( 'service[apache2]' ).to( :restart )
       end
     end
   end
@@ -52,6 +55,6 @@ describe 'apache2-take::default' do
   end
 
   it 'start apache2' do
-    chef_run.should start_service 'apache2-start'
+    expect( chef_run ).to start_service 'apache2-start'
   end
 end
