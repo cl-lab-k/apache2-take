@@ -62,7 +62,7 @@ template '/etc/apache2/ports.conf' do
   variables( { :port => node[ 'apache2-take' ][ 'port'] } )
   notifies :restart, 'service[apache2]'
 end
-template '/etc/apache2/sites-available/default' do
+template '/etc/apache2/sites-available/default.conf' do
   source 'default.erb'
   owner 'root'
   group 'root'

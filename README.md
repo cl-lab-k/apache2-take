@@ -9,7 +9,7 @@ Requirements
 ------------
 
 #### Platforms
-- `ubuntu` - 10.04 LTS, 12.04 LTS
+- `ubuntu` - 10.04 LTS, 12.04 LTS, 14.04 LTS
 
 Attributes
 ----------
