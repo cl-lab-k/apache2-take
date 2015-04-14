@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'apache2-take::default' do
-  let (:chef_run) { ChefSpec::Runner.new.converge 'apache2-take::default' }
+  let (:chef_run) { ChefSpec::SoloRunner.new.converge 'apache2-take::default' }
 
   %w{ apache2 git-core curl unzip }.each do |s|
     it "install #{s}" do
@@ -14,7 +14,7 @@ describe 'apache2-take::default' do
   end
 
   describe 'change port' do
-    %w{ /etc/apache2/ports.conf /etc/apache2/sites-available/default }.each do |s|
+    %w{ /etc/apache2/ports.conf /etc/apache2/sites-available/default.conf }.each do |s|
       it "create #{s}" do
         expect( chef_run ).to render_file( s ).with_content( chef_run.node[ 'apache2-take' ][ 'port' ] )
         expect( chef_run ).to create_template( s )

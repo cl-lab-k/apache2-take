@@ -16,7 +16,7 @@ desc 'foodcritic'
 task :foodcritic do |t|
   if Gem::Version.new( '1.9.2' ) <= Gem::Version.new( RUBY_VERSION.dup )
     # "FC008: Generated cookbook metadata needs updating" is for handson
-    sh "foodcritic -f ~FC008 #{File.dirname( __FILE__ )}"
+    sh "foodcritic -f ~FC008 #{File.dirname( __FILE__ )}/recipes/default.rb"
   else
     puts "WARN: foodcritic run is skipped as Ruby #{RUBY_VERSION} is < 1.9.2."
   end
@@ -25,7 +25,7 @@ end
 desc 'knife cookbook test'
 task :knife do
   Rake::Task[ :prepare_sandbox ].execute
-  sh "bundle exec knife cookbook test cookbook -c test/.chef/knife.rb -o #{sandbox_path}/../"
+  sh "bundle exec knife cookbook test apache2-take -c test/.chef/knife.rb -o #{sandbox_path}/../"
 end
 task :prepare_sandbox do
   files = %w{*.md *.rb attributes definitions files libraries providers recipes resources templates}
@@ -37,7 +37,7 @@ end
 
 private
 def sandbox_path
-  File.join(File.dirname(__FILE__), %w(tmp cookbooks cookbook))
+  File.join(File.dirname(__FILE__), %w(tmp cookbooks apache2-take))
 end
 
 task :default => [ :rspec, :knife, :foodcritic ]
