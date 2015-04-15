@@ -52,7 +52,7 @@ service 'apache2' do
 end
 
 #
-# change port
+# change port (ports.conf)
 #
 template '/etc/apache2/ports.conf' do
   source 'ports.conf.erb'
@@ -62,7 +62,17 @@ template '/etc/apache2/ports.conf' do
   variables( { :port => node[ 'apache2-take' ][ 'port'] } )
   notifies :restart, 'service[apache2]'
 end
-template '/etc/apache2/sites-available/default.conf' do
+
+#
+# change port (apache2 site default)
+#
+if( node[ 'platform' ] == 'ubuntu' &&
+    node[ 'platform_version' ].to_f >= 14.04 )
+  apache2_site_default = 'default.conf'
+else
+  apache2_site_default = 'default'
+end
+template "/etc/apache2/sites-available/#{apache2_site_default}" do
   source 'default.erb'
   owner 'root'
   group 'root'

@@ -14,16 +14,31 @@ describe 'apache2-take::default' do
   end
 
   describe 'change port' do
-    %w{ /etc/apache2/ports.conf /etc/apache2/sites-available/default.conf }.each do |s|
-      it "create #{s}" do
-        expect( chef_run ).to render_file( s ).with_content( chef_run.node[ 'apache2-take' ][ 'port' ] )
-        expect( chef_run ).to create_template( s )
-        file = chef_run.template( s )
-        expect( file.owner ).to eq( 'root' )
-        expect( file.group ).to eq( 'root' )
-        expect( file.mode ).to eq( 00644 )
-        expect( file ).to notify( 'service[apache2]' ).to( :restart )
+    ports_conf = '/etc/apache2/ports.conf'
+    it "create #{ports_conf}" do
+      expect( chef_run ).to render_file( ports_conf ).with_content( chef_run.node[ 'apache2-take' ][ 'port' ] )
+      expect( chef_run ).to create_template( ports_conf )
+      file = chef_run.template( ports_conf )
+      expect( file.owner ).to eq( 'root' )
+      expect( file.group ).to eq( 'root' )
+      expect( file.mode ).to eq( 00644 )
+      expect( file ).to notify( 'service[apache2]' ).to( :restart )
+    end
+
+    it "create /etc/apache2/sites-available/default*" do
+      if( chef_run.node[ 'platform' ] == 'ubuntu' &&
+          chef_run.node[ 'platform_version' ].to_f >= 14.04 )
+        apache2_site_default = "/etc/apache2/sites-available/default.conf"
+      else
+        apache2_site_default = "/etc/apache2/sites-available/default"
       end
+      expect( chef_run ).to render_file( apache2_site_default ).with_content( chef_run.node[ 'apache2-take' ][ 'port' ] )
+      expect( chef_run ).to create_template( apache2_site_default )
+      file = chef_run.template( apache2_site_default )
+      expect( file.owner ).to eq( 'root' )
+      expect( file.group ).to eq( 'root' )
+      expect( file.mode ).to eq( 00644 )
+      expect( file ).to notify( 'service[apache2]' ).to( :restart )
     end
   end
 

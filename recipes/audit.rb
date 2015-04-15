@@ -21,6 +21,13 @@ end
 
 port = node[ 'apache2-take' ][ 'port']
 
+if( node[ 'platform' ] == 'ubuntu' &&
+    node[ 'platform_version' ].to_f >= 14.04 )
+  apache2_site_default = 'default.conf'
+else
+  apache2_site_default = 'default'
+end
+
 control_group "#{cookbook_name}::#{recipe_name}" do
   #
   # install required packages
@@ -75,7 +82,7 @@ control_group "#{cookbook_name}::#{recipe_name}" do
     end
   end
 
-  default_conf = '/etc/apache2/sites-available/default.conf'
+  default_conf = "/etc/apache2/sites-available/#{apache2_site_default}"
   control "file #{default_conf}" do
     it "should be a file" do
       expect( file( default_conf ) ).to be_file
@@ -97,10 +104,10 @@ control_group "#{cookbook_name}::#{recipe_name}" do
   #
   # enable default site
   #
-  control "symlink default.conf" do
+  control "symlink #{apache2_site_default}" do
     it "should be linked to the available file" do
-      expect( file( '/etc/apache2/sites-enabled/default.conf' ) ).to \
-        be_linked_to( '../sites-available/default.conf' )
+      expect( file( "/etc/apache2/sites-enabled/#{apache2_site_default}" ) ).to \
+        be_linked_to( "../sites-available/#{apache2_site_default}" )
     end
   end
 
