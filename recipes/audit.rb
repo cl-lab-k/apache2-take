@@ -106,8 +106,13 @@ control_group "#{cookbook_name}::#{recipe_name}" do
   #
   control "symlink #{apache2_site_default}" do
     it "should be linked to the available file" do
-      expect( file( "/etc/apache2/sites-enabled/#{apache2_site_default}" ) ).to \
-        be_linked_to( "../sites-available/#{apache2_site_default}" )
+      if os[ :family ] == 'ubuntu' && os[ :release ].to_f >= 14.04
+        expect( file( "/etc/apache2/sites-enabled/#{apache2_site_default}" ) ).to \
+          be_linked_to( "../sites-available/#{apache2_site_default}" )
+      else
+        expect( file( "/etc/apache2/sites-enabled/000-default" ) ).to \
+          be_linked_to( "../sites-available/default" )
+      end
     end
   end
 
