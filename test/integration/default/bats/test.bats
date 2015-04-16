@@ -26,8 +26,12 @@ run_install_package_test() {
   [ -f /etc/apache2/ports.conf ]
 }
 
-@test "/etc/apache2/sites-available/default must exist" {
-  [ -f /etc/apache2/sites-available/default ]
+@test "/etc/apache2/sites-available/default* must exist" {
+  if [ "x`lsb_release -si`" = "xUbuntu" -a "x`lsb_release -sr`" = "x14.04" ]; then
+    [ -f /etc/apache2/sites-available/default.conf ]
+  else
+    [ -f /etc/apache2/sites-available/default ]
+  fi
 }
 
 # pending
