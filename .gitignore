@@ -1,3 +1,7 @@
 .bundle
 test/kitchen/.kitchen
 tmp
+.kitchen/
+.kitchen.local.yml
+Berksfile.lock
+Gemfile.lock

@@ -1,0 +1,20 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-14.04
+
+suites:
+  - name: default
+    run_list:
+      - recipe[apt]
+      - recipe[apache2-take]
+    attributes:
+
+verifier:
+  name: shell
+  command: rspec -c -f d -I serverspec serverspec/apache2-take_spec.rb
