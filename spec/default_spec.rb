@@ -1,4 +1,5 @@
 require 'chefspec'
+require 'chefspec/berkshelf'
 
 describe 'apache2-take::default' do
   let (:chef_run) { ChefSpec::SoloRunner.new.converge 'apache2-take::default' }
